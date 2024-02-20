@@ -1,11 +1,10 @@
 <% layout('layouts/app') %>
 
 <h1><%= place.title %></h1>
+<h3><%= place.location %></h3>
+<img src="https://source.unsplash.com/1000x500/?/<%= place.title %>" alt="">
 <p><%= place.description %></p>
-<ul>
-    <li>Harga Masuk: <%= place.price %></li>
-    <li>Lokasi: <%= place.location %></li>
-</ul>
+<p>Harga Masuk: <%= place.price %></p>
 
 <a href="/places/<%= place._id %>/edit">Edit</a>
 <a href="/places">All places</a>
