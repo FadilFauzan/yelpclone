@@ -7,6 +7,8 @@ const methodOverride = require('method-override')
 const session = require('express-session')
 const path = require('path')
 
+const wrapAsync = require('./utils/wrapAsync')
+
 // define port
 const port = 3000
 
@@ -38,46 +40,50 @@ mongoose.connect('mongodb://127.0.0.1:27017/bestpoint')
 
 
 // define routes
-app.get('/places', async (req, res) =>{
+app.get('/places', wrapAsync(async (req, res) =>{
     const places = await Place.find()
     res.render('places/index', {places})
-})
+}))
 
-app.get('/places/:id', async (req, res) =>{
+app.get('/places/:id', wrapAsync(async (req, res) =>{
     const {id} = req.params
     const place = await Place.findById(id)
     res.render('places/show', {place})
-})
+}))
 
 app.get('/place/create', (req, res) =>{
     res.render('places/create')
 })
 
-app.post('/places', async (req, res) =>{
+app.post('/places', wrapAsync(async (req, res) =>{
     const place = new Place(req.body)
-    // console.log(place)
     place.save()
     res.redirect('/places')
-})
+}))
 
-app.get('/places/:id/edit', async (req, res) =>{
+app.get('/places/:id/edit', wrapAsync(async (req, res) =>{
     const {id} = req.params
     const place = await Place.findById(id)
     res.render('places/edit', {place})
-})
+}))
 
-app.put('/places/:id', async (req, res) =>{
+app.put('/places/:id', wrapAsync(async (req, res) =>{
     const {id} = req.params
     await Place.findByIdAndUpdate(id, req.body,
         {runValidators: true}
     )
     res.redirect(`/places/${id}`)
-})
+}))
 
-app.delete('/places/:id', async (req, res) =>{
+app.delete('/places/:id', wrapAsync(async (req, res) =>{
     const {id} = req.params
     await Place.findByIdAndDelete(id)
     res.redirect(`/places`)
+}))
+
+
+app.use((err, req, res, next) => {
+    res.status(500).send('Something broke!')
 })
 
 app.listen(port, () =>{
