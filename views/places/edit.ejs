@@ -2,26 +2,77 @@
 
 <h1 class="text-center">Edit Place</h1>
 <div class="col-6 offset-3">
-    <form action="/places/<%= place._id %>?_method=PUT" method="post">
+    <form action="/places/<%= place._id %>?_method=PUT" method="post" class="validated-form" novalidate>
         <section class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input type="text" name="title" id="title" class="form-control" 
-                value="<%= place.title %>">
+                value="<%= place.title %>" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please fill out the field.
+            </div>
         </section>
+
         <section class="mb-3">
             <label for="location" class="form-label">location</label>
             <input type="text" name="location" id="location" class="form-control"
-            value="<%= place.location %>">
+                value="<%= place.location %>" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please fill out the field.
+            </div>
         </section>
+
         <section class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea name="description" id="description" class="form-control" cols="30" rows="3"><%= place.description %>"</textarea>
+            <textarea name="description" id="description" class="form-control" cols="30" rows="3" required><%= place.description %>"</textarea>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please fill out the field.
+            </div>
         </section>
+
         <section class="mb-3">
             <label for="price" class="form-label">Price</label>
             <input type="text" name="price" id="price" class="form-control"
-                value="<%= place.price %>">
+                value="<%= place.price %>" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please fill out the field.
+            </div>
         </section>
+
         <button type="submit" class="btn btn-success">Save</button>
     </form>
 </div>
+
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.validated-form')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
