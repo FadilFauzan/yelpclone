@@ -1,13 +1,31 @@
 <% layout('layouts/app') %>
 
-<h1>All Places</h1>
-<a href="/place/create">Add Places</a>
+<h1 class="mb-4 text-center">All Places</h1>
 <ul>
     <% for (const place of places) { %>
-        <li>
-            <a href="/places/<%= place._id %>">
-                <%= place.title %>
-            </a>
-        </li>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="https://source.unsplash.com/1000x500/?/<%= place.title %>" alt="<%= place.title %>" 
+                        class="img-fluid">
+                </div>
+
+                <div class="col-md-8 p-3">
+                    <h5 class="card-title">
+                        <%= place.title %>
+                    </h5>
+                    <p class="card-text">
+                        <%= place.description %>
+                    </p>
+                    <h5 class="card-text">
+                        <small class="text-secondary"><%= place.location %></small>
+                    </h5>
+
+                    <a href="/places/<%= place._id %>" class="btn btn-primary mt-auto">
+                        View <%= place.title %>
+                    </a>
+                </div>
+            </div>
+        </div>
     <% } %>
 </ul>
