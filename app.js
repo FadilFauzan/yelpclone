@@ -19,6 +19,8 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, '/views'))
 
 // define middleware
+const validatePlace = require('./middleware/validatePlace');
+
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 app.use(session({
@@ -46,18 +48,18 @@ app.get('/places', wrapAsync(async (req, res) =>{
     res.render('places/index', {places})
 }))
 
+app.get('/places/create', (req, res) =>{
+    res.render('places/create')
+})
+
 app.get('/places/:id', wrapAsync(async (req, res) =>{
     const {id} = req.params
     const place = await Place.findById(id)
     res.render('places/show', {place})
 }))
 
-app.get('/place/create', (req, res) =>{
-    res.render('places/create')
-})
-
-app.post('/places', wrapAsync(async (req, res) =>{
-    const place = new Place(req.body)
+app.post('/places', validatePlace, wrapAsync(async (req, res) =>{
+    const place = new Place(req.body.place)
     place.save()
     res.redirect('/places')
 }))
@@ -68,9 +70,9 @@ app.get('/places/:id/edit', wrapAsync(async (req, res) =>{
     res.render('places/edit', {place})
 }))
 
-app.put('/places/:id', wrapAsync(async (req, res) =>{
+app.put('/places/:id', validatePlace, wrapAsync(async (req, res) =>{
     const {id} = req.params
-    await Place.findByIdAndUpdate(id, req.body,
+    await Place.findByIdAndUpdate(id, req.body.place,
         {runValidators: true}
     )
     res.redirect(`/places/${id}`)
