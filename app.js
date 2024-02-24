@@ -8,6 +8,7 @@ const session = require('express-session')
 const path = require('path')
 
 const wrapAsync = require('./utils/wrapAsync')
+const ErrorHandler = require('./utils/ErrorHandler')
 
 // define port
 const port = 3000
@@ -82,8 +83,14 @@ app.delete('/places/:id', wrapAsync(async (req, res) =>{
 }))
 
 
+app.all('*', (req, res, next) =>{
+    next(new ErrorHandler('Page Not Found', 404))
+})
+
 app.use((err, req, res, next) => {
-    res.status(500).send('Something broke!')
+    const {statusCode = 500} = err
+    if (!err.message) err.message = 'Oh No, Something Went Wrong!'
+    res.status(statusCode).render('error', {err})
 })
 
 app.listen(port, () =>{
