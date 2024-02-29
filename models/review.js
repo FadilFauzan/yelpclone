@@ -6,4 +6,4 @@ const reviewSchema = new Schema({
     body: String,
 })
 
-module.exports = mongoose.model('Riview', reviewSchema)
+module.exports = mongoose.model('Review', reviewSchema)

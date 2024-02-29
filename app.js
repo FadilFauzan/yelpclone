@@ -20,6 +20,7 @@ app.set('views', path.join(__dirname, '/views'))
 
 // define middleware
 const validatePlace = require('./middleware/validatePlace');
+const validateReview = require('./middleware/validateReview');
 
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
@@ -32,6 +33,7 @@ app.use(session({
 
 // models
 const Place = require('./models/place')
+const Review = require('./models/review')
 
 // mongodb connected
 mongoose.connect('mongodb://127.0.0.1:27017/bestpoint')
@@ -82,6 +84,16 @@ app.delete('/places/:id', wrapAsync(async (req, res) =>{
     const {id} = req.params
     await Place.findByIdAndDelete(id)
     res.redirect(`/places`)
+}))
+
+app.post('/places/:id/reviews', validateReview, wrapAsync(async (req, res)  =>{
+    const {id} = req.params
+    const review = new Review(req.body.review)
+    const place = await Place.findById(id)
+    place.reviews.push(review)
+    review.save()
+    place.save()
+    res.redirect(`/places/${id}`)
 }))
 
 
