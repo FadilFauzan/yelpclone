@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const review = require('./review')
 const Schema = mongoose.Schema
 
 const placeSchema = new Schema({
@@ -6,7 +7,11 @@ const placeSchema = new Schema({
     price: String,
     description: String,
     location: String,
-    image: String
+    image: String,
+    reviews: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Review'
+    }] 
 })
 
 module.exports = mongoose.model('Place', placeSchema)
