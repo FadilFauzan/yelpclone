@@ -56,7 +56,7 @@ app.get('/places/create', (req, res) =>{
 
 app.get('/places/:id', wrapAsync(async (req, res) =>{
     const {id} = req.params
-    const place = await Place.findById(id)
+    const place = await Place.findById(id).populate('reviews')
     res.render('places/show', {place})
 }))
 
