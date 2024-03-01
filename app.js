@@ -34,6 +34,7 @@ app.use(session({
 // models
 const Place = require('./models/place')
 const Review = require('./models/review')
+const review = require('./models/review')
 
 // mongodb connected
 mongoose.connect('mongodb://127.0.0.1:27017/bestpoint')
@@ -94,6 +95,13 @@ app.post('/places/:id/reviews', validateReview, wrapAsync(async (req, res)  =>{
     review.save()
     place.save()
     res.redirect(`/places/${id}`)
+}))
+
+app.delete('/places/:place_id/reviews/:review_id', wrapAsync(async (req, res) =>{
+    const {place_id, review_id} = req.params
+    await Place.findByIdAndUpdate(place_id, {$pull: {reviews: review_id}}) 
+    await Review.findByIdAndDelete(review_id)
+    res.redirect(`/places/${place_id}`)
 }))
 
 
