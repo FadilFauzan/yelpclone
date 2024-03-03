@@ -8,8 +8,8 @@ const ErrorHandler = require('../utils/ErrorHandler')
 const Review = require('../models/review')
 const Place = require('../models/place')
 // Middleware
-const validateReview = require('../middleware/validateReview');
-const isValidObjectId = require('../middleware/isValidObjectId')
+const validateReview = require('../middlewares/validateReview');
+const isValidObjectId = require('../middlewares/isValidObjectId')
 
 // Routes
 router.post('/', isValidObjectId(`/places`), validateReview, wrapAsync(async (req, res)  =>{

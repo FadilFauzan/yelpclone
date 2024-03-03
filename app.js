@@ -7,6 +7,9 @@ const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash')
 const path = require('path')
+const passport = require('passport')
+const localStrategy = require('passport-local')
+const User = require('./models/user')
 
 const ErrorHandler = require('./utils/ErrorHandler')
 
@@ -33,6 +36,11 @@ app.use(session({
     }
 }))
 app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new localStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser()) // setter
+passport.deserializeUser(User.deserializeUser()) // getter
 app.use((req, res, next) =>{
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
@@ -54,6 +62,16 @@ const reviewRouter = require('./routes/reviews')
 // define routes
 app.use('/places', placeRouter)
 app.use('/places/:place_id/reviews', reviewRouter)
+
+app.get('/register', async(req, res) =>{
+    const user = new User({
+        email: 'user@mail.com',
+        username: 'user'
+    })
+
+    const newUser = await User.register(user, 'password')
+    res.send(newUser)
+})
 
 
 app.all('*', (req, res, next) =>{
