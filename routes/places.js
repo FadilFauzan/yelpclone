@@ -28,6 +28,7 @@ router.get('/:id', wrapAsync(async (req, res) =>{
 router.post('/', validatePlace, wrapAsync(async (req, res) =>{
     const place = new Place(req.body.place)
     place.save()
+    req.flash('success_msg', 'Place added successfully')
     res.redirect('/places')
 }))
 
