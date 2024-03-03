@@ -6,6 +6,7 @@ const ErrorHandler = require('../utils/ErrorHandler')
 
 // Models
 const Place = require('../models/place')
+
 // Middleware
 const validatePlace = require('../middleware/validatePlace');
 
@@ -43,12 +44,14 @@ router.put('/:id', validatePlace, wrapAsync(async (req, res) =>{
     await Place.findByIdAndUpdate(id, req.body.place,
         {runValidators: true}
     )
+    req.flash('success_msg', 'Place updated successfully')
     res.redirect(`/places/${id}`)
 }))
 
 router.delete('/:id', wrapAsync(async (req, res) =>{
     const {id} = req.params
     await Place.findByIdAndDelete(id)
+    req.flash('success_msg', 'Place deleted successfully')
     res.redirect(`/places`)
 }))
 

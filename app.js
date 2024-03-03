@@ -9,7 +9,6 @@ const flash = require('connect-flash')
 const path = require('path')
 
 const ErrorHandler = require('./utils/ErrorHandler')
-const flashRunner = require('./middleware/flash');
 
 // define port
 const port = 3000
