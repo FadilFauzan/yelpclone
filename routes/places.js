@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 
 const wrapAsync = require('../utils/wrapAsync')
-const ErrorHandler = require('../utils/ErrorHandler')
 
 // Models
 const Place = require('../models/place')

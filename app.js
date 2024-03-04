@@ -58,20 +58,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/bestpoint')
 // define routes
 const placeRouter = require('./routes/places')
 const reviewRouter = require('./routes/reviews')
+const userRouter = require('./routes/user')
 
 // define routes
 app.use('/places', placeRouter)
 app.use('/places/:place_id/reviews', reviewRouter)
-
-app.get('/register', async(req, res) =>{
-    const user = new User({
-        email: 'user@mail.com',
-        username: 'user'
-    })
-
-    const newUser = await User.register(user, 'password')
-    res.send(newUser)
-})
+app.use('/', userRouter)
 
 
 app.all('*', (req, res, next) =>{

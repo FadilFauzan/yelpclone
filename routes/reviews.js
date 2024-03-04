@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router({mergeParams: true})
 
 const wrapAsync = require('../utils/wrapAsync')
-const ErrorHandler = require('../utils/ErrorHandler')
 
 // Models
 const Review = require('../models/review')
 const Place = require('../models/place')
+
 // Middleware
 const validateReview = require('../middlewares/validateReview');
 const isValidObjectId = require('../middlewares/isValidObjectId')
