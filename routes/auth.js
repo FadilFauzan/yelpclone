@@ -8,6 +8,7 @@ const wrapAsync = require('../utils/wrapAsync')
 const User = require('../models/user')
 
 // Middleware
+const validateUser = require('../middlewares/validateUser');
 const isAuth = require('../middlewares/isAuth')
 const isGuest = require('../middlewares/isGuest')
 
@@ -17,7 +18,7 @@ router.get('/register', isGuest, (req, res) =>{
     res.render('auth/register')
 })
 
-router.post('/register', wrapAsync(async (req, res) =>{
+router.post('/register', validateUser, wrapAsync(async (req, res) =>{
     try {
         const {email, username, password} = req.body
         const user = new User({email, username})
