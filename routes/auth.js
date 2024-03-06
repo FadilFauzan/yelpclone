@@ -8,10 +8,12 @@ const wrapAsync = require('../utils/wrapAsync')
 const User = require('../models/user')
 
 // Middleware
-const isValidObjectId = require('../middlewares/isValidObjectId')
+const isAuth = require('../middlewares/isAuth')
+const isGuest = require('../middlewares/isGuest')
+
 
 // Routes
-router.get('/register', (req, res) =>{
+router.get('/register', isGuest, (req, res) =>{
     res.render('auth/register')
 })
 
@@ -29,7 +31,7 @@ router.post('/register', wrapAsync(async (req, res) =>{
     }
 }))
 
-router.get('/login', (req, res) =>{
+router.get('/login', isGuest, (req, res) =>{
     res.render('auth/login')
 })
 
@@ -42,6 +44,14 @@ router.post('/login', passport.authenticate('local', {
 }), (req, res) =>{
     req.flash('success_msg', 'You are logged in')
     res.redirect('/places')
+})
+
+router.post('/logout', isAuth, (req, res) =>{
+    req.logout(function (err) {
+        if (err) {return next(err)}
+        req.flash('success_msg', 'You are logged out')
+        res.redirect('/login')
+    })
 })
 
 module.exports = router

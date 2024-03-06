@@ -42,6 +42,7 @@ passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser()) // setter
 passport.deserializeUser(User.deserializeUser()) // getter
 app.use((req, res, next) =>{
+    res.locals.currentUser = req.user
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
     next()
@@ -58,12 +59,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/bestpoint')
 // define routes
 const placeRouter = require('./routes/places')
 const reviewRouter = require('./routes/reviews')
-const userRouter = require('./routes/user')
+const authRouter = require('./routes/auth')
 
 // define routes
 app.use('/places', placeRouter)
 app.use('/places/:place_id/reviews', reviewRouter)
-app.use('/', userRouter)
+app.use('/', authRouter)
 
 
 app.all('*', (req, res, next) =>{
