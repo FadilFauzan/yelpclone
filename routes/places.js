@@ -9,7 +9,8 @@ const Place = require('../models/place')
 // Middleware
 const validatePlace = require('../middlewares/validatePlace');
 const isValidObjectId = require('../middlewares/isValidObjectId')
-const isAuth = require('../middlewares/isAuth')
+const isAuth = require('../middlewares/isAuth');
+const { isAuthorPlace } = require('../middlewares/isAuthor');
 
 // Routes
 router.get('/', wrapAsync(async (req, res) =>{
@@ -34,13 +35,13 @@ router.post('/', isAuth, validatePlace, wrapAsync(async (req, res) =>{
     res.redirect('/places')
 }))
 
-router.get('/:id/edit', isAuth, isValidObjectId(`/places`), wrapAsync(async (req, res) =>{
+router.get('/:id/edit', isAuth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(async (req, res) =>{
     const {id} = req.params
     const place = await Place.findById(id)
     res.render('places/edit', {place})
 }))
 
-router.put('/:id', isAuth, isValidObjectId(`/places`), validatePlace, wrapAsync(async (req, res) =>{
+router.put('/:id', isAuth, isAuthorPlace, isValidObjectId(`/places`), validatePlace, wrapAsync(async (req, res) =>{
     const {id} = req.params
     await Place.findByIdAndUpdate(id, req.body.place,
         {runValidators: true}
@@ -49,7 +50,7 @@ router.put('/:id', isAuth, isValidObjectId(`/places`), validatePlace, wrapAsync(
     res.redirect(`/places/${id}`)
 }))
 
-router.delete('/:id', isAuth, isValidObjectId(`/places`), wrapAsync(async (req, res) =>{
+router.delete('/:id', isAuth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(async (req, res) =>{
     const {id} = req.params
     await Place.findByIdAndDelete(id)
     req.flash('success_msg', 'Place deleted successfully')
