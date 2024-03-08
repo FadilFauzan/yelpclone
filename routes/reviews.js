@@ -11,6 +11,7 @@ const Place = require('../models/place')
 const validateReview = require('../middlewares/validateReview');
 const isValidObjectId = require('../middlewares/isValidObjectId')
 const isAuth = require('../middlewares/isAuth')
+const { isAuthorReview } = require('../middlewares/isAuthor');
 
 // Routes
 router.post('/', isAuth, isValidObjectId(`/places`), validateReview, wrapAsync(async (req, res)  =>{
@@ -28,7 +29,7 @@ router.post('/', isAuth, isValidObjectId(`/places`), validateReview, wrapAsync(a
     res.redirect(`/places/${place_id}`)
 }))
 
-router.delete('/:review_id', isAuth, isValidObjectId(`/places`), wrapAsync(async (req, res) =>{
+router.delete('/:review_id', isAuth, isAuthorReview, isValidObjectId(`/places`), wrapAsync(async (req, res) =>{
     const {place_id, review_id} = req.params
     await Place.findByIdAndUpdate(place_id, {$pull: {reviews: review_id}}) 
     await Review.findByIdAndDelete(review_id)

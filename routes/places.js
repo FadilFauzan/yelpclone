@@ -24,7 +24,12 @@ router.get('/create', isAuth, (req, res) =>{
 
 router.get('/:id', isValidObjectId('/places'), wrapAsync(async (req, res) =>{
     const {id} = req.params
-    const place = await Place.findById(id).populate('reviews').populate('author')
+    const place = await Place.findById(id)
+        .populate({
+            path: 'reviews',
+            populate: 'author'
+        })
+        .populate('author')
     res.render('places/show', {place})
 }))
 
