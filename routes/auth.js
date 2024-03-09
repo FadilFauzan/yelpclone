@@ -4,40 +4,20 @@ const router = express.Router()
 const passport = require('passport')
 const wrapAsync = require('../utils/wrapAsync')
 
-// Models
-const User = require('../models/user')
+// Controller
+const AuthController = require('../controllers/auth')
 
 // Middleware
 const validateUser = require('../middlewares/validateUser');
-const isAuth = require('../middlewares/isAuth')
-const isGuest = require('../middlewares/isGuest')
-
+const { Guest } = require('../middlewares/isAuth')
+const { Auth } = require('../middlewares/isAuth')
 
 // Routes
-router.get('/register', isGuest, (req, res) =>{
-    res.render('auth/register')
-})
+router.get('/register', Guest, AuthController.registerForm)
 
-router.post('/register', validateUser, wrapAsync(async (req, res) =>{
-    try {
-        const {email, username, password} = req.body
-        const user = new User({email, username})
-        const registerUser = await User.register(user, password)
-        req.login(registerUser, (err) =>{
-            if (err) return next(err)
-            req.flash('success_msg', 'Your are registered and logged in')
-            res.redirect('/places')
-        })
+router.post('/register', Guest, validateUser, wrapAsync(AuthController.register))
 
-    } catch (error) {
-        req.flash('error_msg', error.message)
-        res.redirect('/register')
-    }
-}))
-
-router.get('/login', isGuest, (req, res) =>{
-    res.render('auth/login')
-})
+router.get('/login', Guest, AuthController.loginForm)
 
 router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
@@ -45,17 +25,8 @@ router.post('/login', passport.authenticate('local', {
         type: 'error_msg',
         msg: 'Invalid username or password'
     }
-}), (req, res) =>{
-    req.flash('success_msg', 'You are logged in')
-    res.redirect('/places')
-})
+}), AuthController.login)
 
-router.post('/logout', isAuth, (req, res) =>{
-    req.logout(function (err) {
-        if (err) {return next(err)}
-        req.flash('success_msg', 'You are logged out')
-        res.redirect('/login')
-    })
-})
+router.post('/logout', Auth, AuthController.logout)
 
 module.exports = router
