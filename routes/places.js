@@ -13,18 +13,17 @@ const { Auth } = require('../middlewares/isAuth');
 const { isAuthorPlace } = require('../middlewares/isAuthor');
 
 // Routes
-router.get('/', wrapAsync(PlaceController.index))
+router.route('/')
+    .get(wrapAsync(PlaceController.index))
+    .post(Auth, validatePlace, wrapAsync(PlaceController.store))
 
 router.get('/create', Auth, PlaceController.create)
 
-router.get('/:id', isValidObjectId('/places'), wrapAsync(PlaceController.show))
-
-router.post('/', Auth, validatePlace, wrapAsync(PlaceController.store))
+router.route('/:id')
+    .get(isValidObjectId('/places'), wrapAsync(PlaceController.show))
+    .put(Auth, isAuthorPlace, isValidObjectId(`/places`), validatePlace, wrapAsync(PlaceController.update))
+    .delete(Auth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(PlaceController.destroy))
 
 router.get('/:id/edit', Auth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(PlaceController.edit))
-
-router.put('/:id', Auth, isAuthorPlace, isValidObjectId(`/places`), validatePlace, wrapAsync(PlaceController.update))
-
-router.delete('/:id', Auth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(PlaceController.destroy))
 
 module.exports = router

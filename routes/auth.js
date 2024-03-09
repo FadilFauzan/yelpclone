@@ -13,13 +13,13 @@ const { Guest } = require('../middlewares/isAuth')
 const { Auth } = require('../middlewares/isAuth')
 
 // Routes
-router.get('/register', Guest, AuthController.registerForm)
+router.route('/register')
+    .get(Guest, AuthController.registerForm)
+    .post( Guest, validateUser, wrapAsync(AuthController.register))
 
-router.post('/register', Guest, validateUser, wrapAsync(AuthController.register))
-
-router.get('/login', Guest, AuthController.loginForm)
-
-router.post('/login', passport.authenticate('local', {
+router.route('/login')
+    .get(Guest, AuthController.loginForm)
+    .post(passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: {
         type: 'error_msg',
