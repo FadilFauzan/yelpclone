@@ -3,15 +3,11 @@ const router = express.Router({mergeParams: true})
 
 const wrapAsync = require('../utils/wrapAsync')
 
-// Models
-const Review = require('../models/review')
-const Place = require('../models/place')
-
 // Controller
 const ReviewController = require('../controllers/review')
 
 // Middleware
-const validateReview = require('../middlewares/validateReview');
+const { validateReview } = require('../middlewares/validator');
 const isValidObjectId = require('../middlewares/isValidObjectId')
 const { Auth } = require('../middlewares/isAuth')
 const { isAuthorReview } = require('../middlewares/isAuthor');

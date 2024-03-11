@@ -7,7 +7,7 @@ const wrapAsync = require('../utils/wrapAsync')
 const PlaceController = require('../controllers/place')
 
 // Middleware
-const validatePlace = require('../middlewares/validatePlace');
+const { validatePlace } = require('../middlewares/validator');
 const isValidObjectId = require('../middlewares/isValidObjectId')
 const { Auth } = require('../middlewares/isAuth');
 const { isAuthorPlace } = require('../middlewares/isAuthor');

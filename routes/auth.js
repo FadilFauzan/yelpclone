@@ -8,7 +8,7 @@ const wrapAsync = require('../utils/wrapAsync')
 const AuthController = require('../controllers/auth')
 
 // Middleware
-const validateUser = require('../middlewares/validateUser');
+const { validateUser } = require('../middlewares/validator');
 const { Guest } = require('../middlewares/isAuth')
 const { Auth } = require('../middlewares/isAuth')
 
