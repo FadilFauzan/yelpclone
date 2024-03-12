@@ -7,15 +7,22 @@ const placeSchema = new Schema({
     price: String,
     description: String,
     location: String,
-    image: String,
+    images: [
+        {
+            url: String,
+            filename: String
+        }
+    ],
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    reviews: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Review'
-    }] 
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ] 
 })
 
 placeSchema.post('findOneAndDelete', async function (doc) {
