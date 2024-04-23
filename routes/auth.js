@@ -15,7 +15,7 @@ const { Auth } = require('../middlewares/isAuth')
 // Routes
 router.route('/register')
     .get(Guest, AuthController.registerForm)
-    .post( Guest, validateUser, wrapAsync(AuthController.register))
+    .post( Guest, wrapAsync(AuthController.register))
 
 router.route('/login')
     .get(Guest, AuthController.loginForm)
