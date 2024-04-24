@@ -26,5 +26,6 @@ router.route('/:id')
     .delete(Auth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(PlaceController.destroy))
 
 router.get('/:id/edit', Auth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(PlaceController.edit))
+router.delete('/:id/images', Auth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(PlaceController.destroyImage))
 
 module.exports = router
