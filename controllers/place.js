@@ -50,7 +50,7 @@ module.exports.update = async (req, res) => {
     if (req.files && req.files.length > 0) {
         place.images.forEach(image => {
             fs.unlink(image.url , err => new ErrorHandler(err))
-        });
+        })
 
         const images = req.files.map(file => ({
             url: file.path,
@@ -67,7 +67,16 @@ module.exports.update = async (req, res) => {
 
 module.exports.destroy = async (req, res) => {
     const { id } = req.params
-    await Place.findByIdAndDelete(id)
+    const place = await Place.findById(id)
+
+    if (place.images.length > 0) {
+        place.images.forEach(image => {
+            fs.unlink(image.url , err => new ErrorHandler(err))
+        })
+    }
+
+    await place.deleteOne()
+
     req.flash('success_msg', 'Place deleted successfully')
     res.redirect(`/places`)
 }
