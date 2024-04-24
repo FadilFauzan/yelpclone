@@ -2,7 +2,7 @@
 
 <h1 class="text-center">Edit Place</h1>
 <div class="col-6 offset-3">
-    <form action="/places/<%= place._id %>?_method=PUT" method="post" class="validated-form" novalidate>
+    <form action="/places/<%= place._id %>?_method=PUT" method="post" class="validated-form" novalidate enctype="multipart/form-data">
         <section class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input type="text" name="place[title]" id="title" class="form-control" 
@@ -42,6 +42,17 @@
             <label for="price" class="form-label">Price</label>
             <input type="text" name="place[price]" id="price" class="form-control"
                 value="<%= place.price %>" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please fill out the field.
+            </div>
+        </section>
+
+        <section class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" name="image" id="image" accept="image/*" class="form-control" multiple>
             <div class="valid-feedback">
                 Looks good!
             </div>

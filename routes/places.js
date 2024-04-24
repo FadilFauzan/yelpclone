@@ -22,7 +22,7 @@ router.get('/create', Auth, PlaceController.create)
 
 router.route('/:id')
     .get(isValidObjectId('/places'), wrapAsync(PlaceController.show))
-    .put(Auth, isAuthorPlace, isValidObjectId(`/places`), validatePlace, wrapAsync(PlaceController.update))
+    .put(Auth, isAuthorPlace, isValidObjectId(`/places`), upload.array('image', 5), validatePlace, wrapAsync(PlaceController.update))
     .delete(Auth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(PlaceController.destroy))
 
 router.get('/:id/edit', Auth, isAuthorPlace, isValidObjectId(`/places`), wrapAsync(PlaceController.edit))
