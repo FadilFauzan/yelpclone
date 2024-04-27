@@ -62,6 +62,10 @@ const reviewRouter = require('./routes/reviews')
 const authRouter = require('./routes/auth')
 
 // define routes
+app.get('/', (req, res) => {
+    res.render('home')
+})
+
 app.use('/places', placeRouter)
 app.use('/places/:place_id/reviews', reviewRouter)
 app.use('/', authRouter)
