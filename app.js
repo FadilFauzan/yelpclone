@@ -11,6 +11,8 @@ const passport = require('passport')
 const localStrategy = require('passport-local')
 const User = require('./models/user')
 
+require('dotenv').config()
+
 const ErrorHandler = require('./utils/ErrorHandler')
 
 // define port

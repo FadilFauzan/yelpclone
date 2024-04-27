@@ -17,7 +17,9 @@ module.exports.show = async (req, res) => {
         populate: 'author'
     })
     .populate('author')
-    res.render('places/show', { place })
+    const apiKey = process.env.API_KEY;
+    console.log(apiKey)
+    res.render('places/show', { place, apiKey })
 }
 
 module.exports.create = (req, res) =>{

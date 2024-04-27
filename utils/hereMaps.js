@@ -1,5 +1,4 @@
 const ErrorHandler = require('./ErrorHandler')
-require('dotenv').config()
 
 const baseUrl = 'https://geocode.search.hereapi.com/v1'
 const apiKey = process.env.API_KEY;
@@ -20,7 +19,7 @@ const geometry = async (address) => {
         const position = await geocode(address)
         return {
             type: 'Point',
-            coordinates: [position.lat, position.lng]
+            coordinates: [position.lng, position.lat]
         }
     } catch (error) {
         throw new ErrorHandler(error.message, 500)
