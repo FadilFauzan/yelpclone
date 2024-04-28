@@ -18,7 +18,6 @@ module.exports.show = async (req, res) => {
     })
     .populate('author')
     const apiKey = process.env.API_KEY;
-    console.log(apiKey)
     res.render('places/show', { place, apiKey })
 }
 

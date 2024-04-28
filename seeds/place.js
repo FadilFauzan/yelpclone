@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Place = require('../models/place');
+const { geometry } = require('../utils/hereMaps');
 
 mongoose.connect('mongodb://127.0.0.1/bestpoint')
     .then((result) => {
@@ -21,18 +22,6 @@ async function seedPlaces() {
             price: 'Gratis',
             description: 'Pantai yang terkenal di Bali dengan pemandangan sunset yang indah',
             location: 'Pantai Kuta, Kuta, Badung Regency, Bali'
-        },
-        {
-            title: 'Borobudur',
-            price: 'Rp 25.000',
-            description: 'Candi Buddha terbesar di dunia yang terletak di Magelang, Jawa Tengah',
-            location: 'Borobudur, Magelang, Central Java'
-        },
-        {
-            title: 'Kawah Putih',
-            price: 'Rp 50.000',
-            description: 'Kawah vulkanik dengan danau berwarna putih di Bandung, Jawa Barat',
-            location: 'Kawah Putih, Ciwidey, West Java'
         },
         {
             title: 'Malioboro',
@@ -84,12 +73,6 @@ async function seedPlaces() {
             location: 'Candi Borobudur, Borobudur, Magelang, Central Java'
         },
         {
-            title: 'Pulau Komodo',
-            price: 'Rp 5.000.000',
-            description: 'Pulau di Indonesia yang terkenal dengan komodo, hewan terbesar di dunia',
-            location: 'Pulau Komodo, East Nusa Tenggara'
-        },
-        {
             title: 'Taman Nasional Gunung Rinjani',
             price: 'Rp 150.000',
             description: 'Taman nasional yang terletak di Lombok dan memiliki gunung tertinggi kedua di Indonesia',
@@ -108,18 +91,6 @@ async function seedPlaces() {
             location: 'Pulau Weh, Sabang, Aceh'
         },
         {
-            title: 'Taman Safari Indonesia',
-            price: 'Rp 180.000',
-            description: 'Taman hiburan keluarga dengan berbagai satwa liar di Cisarua, Bogor',
-            location: 'Taman Safari Indonesia, Cisarua, West Java'
-        },
-        {
-            title: 'Gunung Merbabu',
-            price: 'Rp 50.000',
-            description: 'Gunung yang terletak di Jawa Tengah dengan pemandangan matahari terbit yang indah',
-            location: 'Gunung Merbabu, Central Java'
-        },
-        {
             title: 'Pulau Lombok',
             price: 'Gratis',
             description: 'Pulau di Indonesia yang terkenal dengan keindahan pantainya',
@@ -134,9 +105,14 @@ async function seedPlaces() {
     ]
 
     try {
-        const newPlace = places.map(place =>{
-            return { ...place, author: "65e808de6bb1b850cf98fcb4" }
-        })
+        const newPlace = await Promise.all(places.map( async place =>{
+            let geoData = await geometry(place.location)
+            return { 
+                ...place, 
+                author: "65e808de6bb1b850cf98fcb4",
+                geometry: geoData
+            }
+        }))
         await Place.deleteMany({});
         await Place.insertMany(newPlace);
         console.log('Data berhasil disimpan');

@@ -1,4 +1,5 @@
 const ErrorHandler = require('./ErrorHandler')
+require('dotenv').config();
 
 const baseUrl = 'https://geocode.search.hereapi.com/v1'
 const apiKey = process.env.API_KEY;
@@ -8,6 +9,11 @@ const geocode = async (address) => {
     try {
         const response = await fetch(url)
         const data = await response.json()
+        
+        console.log(data.items[0].title)
+        if (!data.items || data.items.length === 0) {
+            throw new Error("No location found for the given address.");
+        }
         return data.items[0].position
     } catch (error) {
         throw new ErrorHandler(error.message, 500)
