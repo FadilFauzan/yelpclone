@@ -65,7 +65,7 @@ const authRouter = require('./routes/auth')
 
 // define routes
 app.get('/', (req, res) => {
-    res.render('home')
+    res.render('home', { title: 'Home' })
 })
 
 app.use('/places', placeRouter)

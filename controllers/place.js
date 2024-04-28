@@ -6,7 +6,11 @@ const { geometry } = require('../utils/hereMaps')
 
 module.exports.index = async (req, res) => {
     const places = await Place.find()
-    res.render('places/index', { places })
+    res.render('places/index', { 
+        places, 
+        title: 'All Places',
+        active: 'place'
+    })
 }
 
 module.exports.show = async (req, res) => {
@@ -18,11 +22,20 @@ module.exports.show = async (req, res) => {
     })
     .populate('author')
     const apiKey = process.env.API_KEY;
-    res.render('places/show', { place, apiKey })
+    res.render('places/show', { 
+        place, 
+        apiKey, 
+        title: 'Show Place',
+        active: 'place'
+    })
 }
 
 module.exports.create = (req, res) =>{
-    res.render('places/create')
+    const active = 'new_place'
+    const title = 'New Place'
+    res.render('places/create', { 
+        active, title
+    })
 }
 
 module.exports.store = async (req, res) => {
@@ -47,7 +60,11 @@ module.exports.store = async (req, res) => {
 module.exports.edit = async (req, res) => {
     const { id } = req.params
     const place = await Place.findById(id)
-    res.render('places/edit', { place })
+    res.render('places/edit', { 
+        place, 
+        title: 'Edit Place',
+        active: 'place'
+    })
 }
 
 module.exports.update = async (req, res) => {
@@ -94,7 +111,7 @@ module.exports.destroyImage = async (req, res) => {
         const { images } = req.body
 
         if (!images || images.length === 0) {
-            req.flash('error_msg', 'Pleas select at least one image')
+            req.flash('error_msg', 'Please select at least one image')
             return res.redirect(`/places/${id}/edit`)
         }
 
