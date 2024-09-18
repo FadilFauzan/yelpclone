@@ -110,9 +110,21 @@ module.exports.destroyImage = async (req, res) => {
         const { id } = req.params
         const { images } = req.body
 
+        const place = await Place.findById(id);
+        if (!place) {
+            req.flash('error_msg', 'Place not found');
+            return res.redirect(`/places/${id}/edit`);
+        }
+
         if (!images || images.length === 0) {
             req.flash('error_msg', 'Please select at least one image')
             return res.redirect(`/places/${id}/edit`)
+        }
+
+        const remainingImages = place.images.length - images.length
+        if (remainingImages <= 0) {
+            req.flash('error_msg', 'Please at least pin or add one photo to your post');
+            return res.redirect(`/places/${id}/edit`);
         }
 
         images.forEach(image => {
