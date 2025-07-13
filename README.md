@@ -27,11 +27,5 @@ Aplikasi akan berjalan pada `http://localhost:3000` secara default.
 ## Kontribusi
 Kontribusi selalu disambut! Jika Anda ingin berkontribusi pada proyek ini, silakan buat pull request dengan perubahan yang diusulkan.
 
-## Lisensi
-Tuliskan lisensi proyek Anda di sini.
-
-## Penulis
-Tuliskan informasi penulis atau tim pengembang di sini.
-
 ## Kontak
 Jika Anda memiliki pertanyaan atau saran, silakan hubungi kami di [fadilahmadfauzan04@gmail.com](fadilahmadfauzan04@gmail.com).
